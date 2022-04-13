@@ -1,0 +1,84 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+nav{
+    background-color: #a3bbcf !important;
+}
+.contact_details-icon{
+    font-size: 1.5rem !important;
+    /* margin-left: 4rem !important;  */
+}
+
+.contact_details-info{
+    margin-top: -1.3rem;
+}
+
+
+.fa{
+    font-size: 2rem;
+    margin-left: 1rem;
+}
+
+footer{
+    background-color: aliceblue; 
+}
+
+
+/* sections */
+
+ .contact_banner > .container{
+    padding-top: 2rem;
+}
+
+/* sections //end */
+
+
+
+
+
+
+
+
+.clipPath {
+    min-height: 85vh;
+    background-color: aliceblue;
+    clip-path: polygon(0 0, 100% 0, 100% 93%, 0 100%);
+}
+
+.clipPath_contact{
+    min-height: 100vh;
+    background-color: aliceblue;
+    clip-path: polygon(0 7%, 100% 0, 100% 93%, 0 100%);
+}
+@media screen and (max-width: 600px){
+    .home_banner{
+        padding-top: 10px !important;
+        padding-bottom: 20px !important;
+    }
+    .clipPath {
+        height: 75vh;
+        background-color: aliceblue;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .clipPath_contact{
+        min-height: 100vh;
+        background-color: aliceblue;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .contact_img{
+        margin-top: 2rem;
+    }
+}
+
+
+
+
+
+.box-shadow{
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+}
