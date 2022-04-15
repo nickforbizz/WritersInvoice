@@ -1,0 +1,12 @@
+2022-04-15 14:21:54 [development] error: Account.findById is not a function
+2022-04-15 14:25:52 [development] error: Account.findById is not a function
+2022-04-15 14:26:19 [development] error: TypeError: Account.findById is not a function
+    at handler (webpack-internal:///(api)/./pages/api/account/[id].js:42:46)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async Object.apiResolver (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\api-utils\node.js:182:9)
+    at async DevServer.runApi (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\next-server.js:386:9)
+    at async Object.fn (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\base-server.js:488:37)
+    at async Router.execute (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\router.js:228:32)
+    at async DevServer.run (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\base-server.js:600:29)
+    at async DevServer.run (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\dev\next-dev-server.js:445:20)
+    at async DevServer.handleRequest (D:\workspace\laravel\next-writersinvoice\node_modules\next\dist\server\base-server.js:307:20)
