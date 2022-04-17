@@ -1,5 +1,7 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
+import logger from "../../../services/logger";
+const { User } = require('../../../models');
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -22,22 +24,52 @@ export default NextAuth({
     signIn: "/auth/signin",
   },
 
-//   jwt : {
-//       encription: true,
-//   },
+  // jwt : {
+  //     encription: true,
+  // },
 //   secret: process.env.SECRET,
   callbacks: {
-        // async jwt(token, account) {
-        // if (account ?.accessToken) {
-        //     token.accessToken = account.accessToken
-        // }
-        // console.log({token});
-        // return token;
-        // },
-        // jwt: async ({ token, user }) => {
-        //     user && (token.user = user)
-        //     return token
-        // },
+        async jwt(token, account) {
+          if (account ?.accessToken) {
+              token.accessToken = account.accessToken
+          }
+          return token;
+        },
+
+        jwt: async ({ token, user }) => {
+          
+          user && (token.user = user)
+
+          // save user to DB
+          if (token && token.user) {
+            try {
+              let auth_user = token.user;
+              let email =  auth_user.email;
+              let db_user = await User.findOne({ where: { email }});
+
+
+              if (!db_user) {
+                const [fname, lname] = auth_user.name.split(' ');
+                const [email_name, third_party_name] = auth_user.email.split('@');
+
+                let payload = {
+                  fname, lname, email,
+                  password: email_name,
+                  is_third_party_access: true,
+                  third_party_name
+                }
+
+                await User.create(payload);
+              }   
+
+            } catch (error) {
+              logger.error(error.stack)
+            }
+          }
+
+          return token
+        },
+
         // session: async ({ session, token, user }) => {
         //     session.user = token.user
         //     return session
@@ -46,6 +78,7 @@ export default NextAuth({
         //     console.log('url');
         //     if (url === '/') {
         //         console.log({url});
+        //         console.log('xxx');
         //         return Promise.resolve('/Dashboard')
         //     }else{
         //         console.log({url});
@@ -53,7 +86,7 @@ export default NextAuth({
         //         return  Promise.resolve('/Dashboard/accounts')
         //     }
         
-        // }
+        // },
 
 
         async session({ session, token, user}) {

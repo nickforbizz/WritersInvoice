@@ -10,7 +10,7 @@ export default function dashboardlayout({ children }) {
 
         <Sidebar />
 
-        <main className="main-panel">
+        <main className="main-panel" style={{paddingTop: '40px'}}>
           { children }
 
           <Footer />

@@ -7,7 +7,7 @@ import Script from 'next/script'
 export default function Footer() {
   return (
     <>
-        <footer className="mt-5">
+        <footer className="box-shadow">
               <div className="container">
                   <div className="row">
                       <div className="col-md-4">
@@ -57,6 +57,7 @@ export default function Footer() {
 
           {/* <!-- Bootstrap JavaScript Bundle with Popper --> */}
           <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossOrigin="anonymous" />
+          <Script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"  />
           {/* <!-- Site Js --> */}
           <Script src="/assets/js/main.js" />
     </>

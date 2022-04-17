@@ -61,7 +61,7 @@ footer{
         padding-bottom: 20px !important;
     }
     .clipPath {
-        height: 75vh;
+        min-height: 75vh;
         background-color: aliceblue;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     }

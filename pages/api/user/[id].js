@@ -1,6 +1,6 @@
 import logger from '../../../services/logger';
 
-const {Account} = require('../../../models');
+const {User} = require('../../../models');
 
 
 
@@ -15,13 +15,13 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const account = await Account.findByPk(id);
+                const user = await User.findByPk(id);
 
-                if (!account) {
+                if (!user) {
                     res.status(200).json({ success: false, msg: `No data found with id ${id}`  });
                 }
 
-                res.status(200).json({ success: true, msg: 'Retrived data successfully', data: account });
+                res.status(200).json({ success: true, msg: 'Retrived data successfully', data: user });
 
             } catch (error) {
                  logger.error(error.stack);
@@ -32,27 +32,26 @@ export default async function handler(req, res) {
         case 'PUT':
             try {
                 let response = null;
-                const account = await Account.update(req.body,{ where: { id,  }});
+                const user = await User.update(req.body,{ where: { id }, individualHooks: true});
 
-                if(!account){
-                    logger.info(`Account with id ${id} was not found`)
-                    res.status(200).json({ success: false, msg: 'Account Not found', data: response })
+                if(!user){
+                    res.status(200).json({ success: false, msg: 'User Not found', data: response })
                 }
-
-                response = await Account.findByPk(id);
+                
+                response = await User.findByPk(id);
 
                 res.status(200).json({ success: true, msg: 'Updated data successfully', data: response })
 
             } catch (error) {
-                logger.error(error.stack);
+                 logger.error(error.stack);
                 res.status(400).json({ success: false, msg: error });
             }
             break;
 
         case 'DELETE':
             try {
-                const account = await Account.destroy({ where: { id: id }});
-                res.status(200).json({ success: true, msg: 'Updated data successfully', data: account })
+                const user = await User.destroy({ where: { id: id }});
+                res.status(200).json({ success: true, msg: 'Updated data successfully', data: user })
             } catch (error) {
                  logger.error(error.stack);
                 res.status(400).json({ success: false, msg: error });

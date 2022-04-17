@@ -1,6 +1,6 @@
 import logger from '../../../services/logger';
 
-const {Account} = require('../../../models');
+const { User } = require('../../../models');
 
 
 
@@ -11,8 +11,8 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const accounts = await Account.findAll();
-                res.status(200).json({ success: true, msg: 'Retrived data successfully', data: accounts })
+                const users = await User.findAll();
+                res.status(200).json({ success: true, msg: 'Retrived data successfully', data: users })
             } catch (error) {
                 logger.error(error.stack);
                 res.status(400).json({ success: false, msg: error  });
@@ -21,8 +21,12 @@ export default async function handler(req, res) {
         
         case 'POST':
             try {
-                const account = await Account.create(req.body);
-                res.status(201).json({ success: true, msg: 'Created data successfully', data: account })
+                let found_user = await User.findOne({where: {email: req.body.email}});
+                if(found_user){
+                    res.status(200).json({ success: false, msg: `User with email ${req.body.email} already exists`  });
+                }
+                const user = await User.create(req.body);
+                res.status(201).json({ success: true, msg: 'Created data successfully', data: user })
             } catch (error) {
                 logger.error(error.stack);
                 res.status(400).json({ success: false, msg: error });

@@ -14,7 +14,9 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps }  }) => {
   return (
     <SessionProvider session={session}>
       <Layout>
-        <Component {...pageProps} />
+        <main>
+          <Component {...pageProps} />
+        </main>
       </Layout>
     </SessionProvider>
       )
