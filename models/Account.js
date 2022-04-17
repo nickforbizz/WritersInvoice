@@ -4,7 +4,7 @@ const Sequelize_DB = require('../utils/db');
 
 
 
-const Account = Sequelize_DB.define('accounts', {
+const AccountShema = Sequelize_DB.define('accounts', {
     id:{
   
         // Sequelize module has INTEGER Data_Type.
@@ -29,7 +29,38 @@ const Account = Sequelize_DB.define('accounts', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
+    },
 
+    cpp: {
+        type: Sequelize.DECIMAL(10,2),
+        allowNull: false,
+        comment: "Pay Per Page" 
+    },
+
+    managed_by: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1,
+        comment: "User Id" 
+    },
+
+    no_of_writers: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1,
+        comment: "Total Users" 
+    },
+
+    uses_vpn: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+    },
+
+    vpn_name: {
+        type: Sequelize.STRING,
+    },
+
+    vpn_cost: {
+        type: Sequelize.DECIMAL(10,2),
+        defaultValue: 0.00,
     },
     
     active: {
@@ -39,7 +70,8 @@ const Account = Sequelize_DB.define('accounts', {
 
     status: {
         type: Sequelize.INTEGER,
-        defaultValue: 1 
+        defaultValue: 1,
+        comment: "1 Normal, 2 Silver, 3 Platinum, 4 Gold" 
     },
 
     updated_at: {
@@ -61,7 +93,7 @@ const Account = Sequelize_DB.define('accounts', {
 });
 
 
-// Exporting Account, using this constant
+// Exporting AccountShema, using this constant
 // we can perform CRUD operations on
 // 'Account' table.
-module.exports = Account
+module.exports = AccountShema

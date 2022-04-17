@@ -39,4 +39,4 @@ next.config.js
 package-lock.json
 
 # logger
-/log
+/logs

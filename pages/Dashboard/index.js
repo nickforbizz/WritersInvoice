@@ -1,5 +1,6 @@
 import React from 'react'
-import { getSession } from "next-auth/react"
+import { signOut, getSession } from "next-auth/react"
+const { User } = require('../../models');
 
  const Dashboard = ({get_session}) => {
 	
@@ -172,15 +173,30 @@ import { getSession } from "next-auth/react"
 
 
 export async function getServerSideProps(context) {
-	const get_session = await getSession(context)
-  
+	const get_session = await getSession(context);
+	
+	
 	if (!get_session) {
-	  return {
-		redirect: {
-		  destination: '/',
-		  permanent: false,
-		},
-	  }
+		signOut();
+		return {
+			redirect: {
+			  destination: '/',
+			  permanent: false,
+			},
+		  }
+	}
+
+	let email =  get_session.user.email;
+	let db_user = await User.findOne({ where: { email }});
+	if (db_user && db_user.active === 0) {
+		let new_destination = (db_user && db_user.active === 0) ? '/notauthorized' : '/dashboard';
+		signOut();
+		return {
+			redirect: {
+			  destination: new_destination,
+			  permanent: false,
+			},
+		  }
 	}
   
 	return {

@@ -4,18 +4,21 @@ import { getProviders, signIn as SignIntoProvider } from "next-auth/react";
 
 const SignIn = ({ providers }) => {
   return (
-    <div className=''>
-        <div className="d-flex align-self-center  my-auto">
-            <div className="card p-5 mt-5 ml-5" >
-                <div className='mt-5 '>
+    <div className='fitted-content'>
+        <div className="center-div">
+            <div className="card p-5 mt-5" >
+                <div className=''>
                     {Object.values(providers).map((provider) => (
                         <div key={provider.name}>
-                        <button onClick={() => SignIntoProvider(provider.id, { callbackUrl: "/Dashboard"})}
-                            className="btn btn-info">
-                            Sign in with {provider.name}
-                        </button>
+                          <button onClick={() => SignIntoProvider(provider.id, { callbackUrl: "/Dashboard"})}
+                              className="btn btn-primary btn-round">
+                              Sign in with {provider.name}
+                          </button>
                         </div>
                     ))}
+
+                    <hr/>
+                    <p className="text-muted text-justified text-center" >Click to sign into your user account </p>
                 </div>
 
             </div>

@@ -9,6 +9,16 @@
             "date": 1650021713692,
             "name": "logs\\application-2022-04-15.log",
             "hash": "48bc4553acd2618c7364e629670f24bd"
+        },
+        {
+            "date": 1650109255874,
+            "name": "logs\\application-2022-04-16.log",
+            "hash": "fade997975b9c91eb7af8e6a4e73cb1f"
+        },
+        {
+            "date": 1650192809762,
+            "name": "logs\\application-2022-04-17.log",
+            "hash": "9c7bdce065e33a39967c72260aa96968"
         }
     ],
     "hashType": "md5"
