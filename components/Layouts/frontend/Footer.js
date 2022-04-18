@@ -48,18 +48,13 @@ export default function Footer() {
                   </div>
               </div>
               <div className="col-12 text-center p-3 bg-light">© 2022 Mkenyadaima.co.ke </div>
-          </footer>
+        </footer>
 
-
-
-
-
-
-          {/* <!-- Bootstrap JavaScript Bundle with Popper --> */}
-          <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossOrigin="anonymous" />
-          <Script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"  />
-          {/* <!-- Site Js --> */}
-          <Script src="/assets/js/main.js" />
+        {/* <!-- Bootstrap JavaScript Bundle with Popper --> */}
+        <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossOrigin="anonymous" />
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"  />
+        {/* <!-- Site Js --> */}
+        <Script src="/assets/js/main.js" />
     </>
   )
 }

@@ -16,6 +16,7 @@ Models.User = require('./User');
 
 // Make changes to match the Model
 Sequelize_DB.sync({ alter: true });
+
 // Drop the table, then Recreate it 
 // Sequelize_DB.sync({ force: true });
 

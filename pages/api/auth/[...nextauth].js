@@ -1,5 +1,8 @@
 import NextAuth from "next-auth"
+import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+const bcrypt = require('bcrypt');
+
 import logger from "../../../services/logger";
 const { User } = require('../../../models');
 
@@ -9,25 +12,55 @@ export default NextAuth({
     GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // authorization: {
-        //     params: {
-        //       prompt: "consent",
-        //       access_type: "offline",
-        //       response_type: "code"
-        //     }
-        //   }
+        authorization: {
+            params: {
+              prompt: "consent",
+              access_type: "offline",
+              response_type: "code"
+            }
+          }
+    }),
+    Credentials({
+      name: 'EmailPassword',
+      credentials: {
+        email : {
+          label: 'Email',
+          type: 'email',
+          placeholder: 'name@example.com',
+        },
+        password : {
+          label: 'Password',
+          type: 'password',
+        },
+      },
+      async authorize(credentials){
+        // with credentials, find if user is in DB
+        const email = credentials.email;
+        const password = credentials.password;
+        const user = await User.findOne({where: {email,}});
+
+        if(user){
+          const valid_password = await user.validPassword(password, user.password);
+          if (valid_password) {
+            return user;            
+          }
+
+        }
+      }
     }),
     // ...add more providers here
   ],
 
   pages: {
     signIn: "/auth/signin",
+    verifyRequest: '/auth/verify-request', // (used for check email message)
+    newUser: '/auth/new-user'
   },
 
-  // jwt : {
-  //     encription: true,
-  // },
-//   secret: process.env.SECRET,
+  jwt : {
+      encription: true,
+  },
+  secret: process.env.SECRET,
   callbacks: {
         async jwt(token, account) {
           if (account ?.accessToken) {
@@ -45,6 +78,7 @@ export default NextAuth({
             try {
               let auth_user = token.user;
               let email =  auth_user.email;
+              let profile =  auth_user.profile;
               let db_user = await User.findOne({ where: { email }});
 
 
@@ -56,7 +90,8 @@ export default NextAuth({
                   fname, lname, email,
                   password: email_name,
                   is_third_party_access: true,
-                  third_party_name
+                  third_party_name,
+                  profile
                 }
 
                 await User.create(payload);
@@ -90,12 +125,21 @@ export default NextAuth({
 
 
         async session({ session, token, user}) {
-            session.user.username = session.user.name
-              .split(" ")
-              .join("")
-              .toLocaleLowerCase();
-      
+          // GOOGLE user
+          if (session.user.username) {
+            session.user.username = session.user.name.split(" ").join("").toLocaleLowerCase();
             session.user.uid = token.sub;
+          }
+          
+          // DB user
+          if (token.user && token.user.password) {
+            session.user.uid = token.sub;
+            session.user.username = token.email.split("@")[0];
+            session.user.name = token.user.fname +' '+token.user.lname;
+            session.user.image = token.user.profile;
+          }
+
+      
             return session;
         }
     }

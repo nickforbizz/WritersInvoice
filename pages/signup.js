@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-css-tags */
 
 import { useRouter } from 'next/router';
+import { getCsrfToken } from "next-auth/react"
 import 'fontawesome-4.7';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
@@ -11,7 +12,7 @@ import Link from 'next/link';
 import toastr from 'toastr';
 import { env } from '../next.config';
 
-const  Notauthorized = () => {
+const  SignIn = ({ csrfToken }) => {
 
 const router = useRouter()
 const BACKEND_URL = env.BACKEND_URL
@@ -53,6 +54,7 @@ const onSubmit = data => {
 
                         <div className="card box-shadow p-5 mt-1 mb-5">
                             <form className="form row" onSubmit={handleSubmit(onSubmit)}>
+                                <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
                                 <div className="col-md-6 mb-3">
                                     <label className="form-label">First Name</label>
                                     <input type="text" className="form-control" id="signUp_fname" 
@@ -115,7 +117,7 @@ const onSubmit = data => {
 
                                 <div className="mb-3">
                                     <hr />
-                                    <input type="submit" className="btn btn-sm btn-primary btn-round-custom input-submit" id="check_userInAcc" value="Sign Up" />
+                                    <input type="submit" className="btn btn-sm btn-primary btn-round-custom input-submit" value="Sign Up" />
                                     <Link href={'/'}>
                                         <a className="btn btn-primary btn-round-custom pull-right"> login</a>
                                     </Link>
@@ -149,5 +151,14 @@ const onSubmit = data => {
   )
 }
 
-Notauthorized.layout = "frontedLayout"
-export default Notauthorized;
+
+export async function getServerSideProps(context) {
+    const csrfToken = await getCsrfToken(context)
+    return {
+        props: { csrfToken },
+    }
+}
+
+
+SignIn.layout = "frontedLayout"
+export default SignIn;

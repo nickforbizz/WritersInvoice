@@ -1,20 +1,28 @@
 /* eslint-disable @next/next/no-css-tags */
 
-import Image from 'next/image'
 import 'fontawesome-4.7';
 import { useRouter } from 'next/router';
-import { useSession, signIn } from "next-auth/react"
+import { getCsrfToken, useSession, signIn } from "next-auth/react"
+import { useForm } from "react-hook-form";
+import { getProviders, signIn as SignIntoProvider } from "next-auth/react";
+
+// Components
+import Image from 'next/image'
 
 import styles from '../styles/Home.module.css'
+import Link from 'next/link';
 
-const  Home = () => {
+const  Home = ({ csrfToken, providers }) => {
 
   const router = useRouter()
 
-  const handleLogin = (e) => {
-    e.preventDefault()
-    router.push('/Dashboard/')
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
+  const onSubmit = data => {
+      console.log(data);
+      signIn("credentials", data)
+      SignIntoProvider('EmailPassword', { callbackUrl: "/Dashboard"})
   }
+
   return (
     <>
       
@@ -30,34 +38,14 @@ const  Home = () => {
                     </div>
 
                     <div className="col-md-6">
-                        <div className="card p-5 mt-5">
-                            <form className="form " onSubmit={handleLogin}>
-                                <div className="mb-3">
-                                    <label className="form-label">Email address</label>
-                                    <input type="email" className="form-control" id="login_email" placeholder="name@example.com" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Password</label>
-                                    <input type="password" className="form-control" id="login_password" placeholder="your password" />
-                                </div>
-                                {/* <div className="mb-3">
-                                    <label className="form-label">Select Account</label>
-                                    <select className="form-select" aria-label="Default select example" id="select-acc">
-                                        <option selected value="">Open this select menu</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div> */}
-                                <div className="mb-3">
-                                    <hr />
-                                    <input type="submit" className="btn btn-sm btn-primary btn-round-custom input-submit" id="check_userInAcc" value="Submit" />
-                                    <button className="btn btn-primary btn-round-custom pull-right" onClick={() => signIn()}>Google login</button>
-                                    <hr />
-                                </div>
-                            </form>
+                        <div className="card mt-5 box-shadow">
+                            <Image layout='responsive' width={'100%'} height={"70%"} src="/assets/imgs/creative.jpg"  className="card-img-top" alt="creative" />
+                            <div className='p-3'>
 
-                            <p className="text-muted text-justified text-center" >Click to sign into your user account </p>
+                                <Link href={'/auth/signin'}>
+                                    <a className='btn btn-md btn-primary btn-round-custom'>Login</a>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,6 +168,18 @@ const  Home = () => {
     </>
   )
 }
+
+
+export async function getServerSideProps(context) {
+    return {
+      props: {
+        csrfToken: await getCsrfToken(context),
+        providers: await getProviders(context) 
+      },
+    }
+}
+
+  
 
 Home.layout = "frontedLayout"
 export default Home;
