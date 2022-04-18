@@ -52,6 +52,9 @@ export default function Header() {
                     <Link href={'/signup'}>
                       <a className="nav-link">SignUp</a>
                     </Link>
+                    <Link href={'/auth/signin'}>
+                      <a className="nav-link">Login</a>
+                    </Link>
                 </div>
                 </div>
             </div>

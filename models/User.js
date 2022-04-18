@@ -30,9 +30,9 @@ const UserSchema = Sequelize_DB.define('users', {
     password: {
         type: Sequelize.STRING,
         allowNull: true,
-        get() {
-            return undefined;
-        }
+        // get() {
+        //     return undefined;
+        // }
     },
 
     fname: {
@@ -72,6 +72,11 @@ const UserSchema = Sequelize_DB.define('users', {
         type: Sequelize.STRING,
     },
 
+    profile: {
+        type: Sequelize.STRING,
+        defaultValue: '/assets/imgs/profile.png',
+    },
+
     active: {
         type: Sequelize.INTEGER,
         defaultValue: 0
@@ -101,16 +106,17 @@ const UserSchema = Sequelize_DB.define('users', {
     underscored: true,
     hooks: {
         beforeCreate: async (user) => {
+            console.log("beforeCreate");
             if (user.password) {
                 const salt = await bcrypt.genSaltSync(10, 'a');
-                user.password = bcrypt.hashSync(user.password, salt);
+                user.password = await bcrypt.hashSync(user.password, salt);
             }
         },
 
         beforeUpdate: async (user) => {
             if (user.password) {
                 const salt = await bcrypt.genSaltSync(10, 'a');
-                user.password = bcrypt.hashSync(user.password, salt);
+                user.password = await bcrypt.hashSync(user.password, salt);
             }
         },
         

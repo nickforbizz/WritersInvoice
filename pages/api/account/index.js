@@ -5,7 +5,15 @@ const {Account} = require('../../../models');
 
 
 export default async function handler(req, res) {
-    const { method } = req;
+    const { method, headers } = req;
+
+    if (headers && headers.api_token) {
+        if (headers.api_token !== process.env.SECRET) {
+            res.status(400).json({success: false, msg: "api_token provided in the headers does not match with the app token"})
+        }
+    }else{
+        res.status(400).json({success: false, msg: "api_token not provided in the headers"})
+    }
 
 
     switch (method) {
