@@ -4,8 +4,8 @@ const Sequelize_DB = require('../utils/db');
 
 const Models = {};
 // Import our Models
-Models.Account = require('./Account');
-Models.User = require('./User');
+Models.Account = require('./AccountSchema');
+Models.User = require('./UserSchema');
 
 
 
