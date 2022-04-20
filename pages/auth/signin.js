@@ -54,24 +54,27 @@ const SignIn = ({ csrfToken, providers }) => {
                     </div> */}
                     <div className="mb-3">
                         <hr />
-                        <input type="submit" className="btn btn-sm btn-primary btn-round-custom input-submit" value="Submit" />
+                        <input type="submit" className="btn  btn-primary btn-block btn-round-custom input-submit" value="Submit" />
                         {/* <button className="btn btn-primary btn-round-custom pull-right" onClick={() => signIn()}>Google login</button> */}
                         <hr />
-                        {Object.values(providers).map((provider) => {
-                            if(provider.name === 'EmailPassword') {
-                                return 
-                            }else{
-                              return <div key={provider.name} className=''>
-                          <button onClick={() => SignIntoProvider(provider.id, { callbackUrl: "/Dashboard"})}
-                              className="btn btn-primary btn-round-custom">
-                              Sign in with {provider.name}
-                          </button>
-                        </div>
-                            }
-                        })}
                     </div>
                 </form>
 
+                <div className="providers">
+                  {Object.values(providers).map((provider) => {
+                      if(provider.name === 'EmailPassword') {
+                          return 
+                      }else{
+                        return  <div key={provider.name} className=''>
+                                  <button onClick={() => SignIntoProvider(provider.id, { callbackUrl: "/Dashboard"})}
+                                      className="btn btn-primary btn-round-custom">
+                                      Sign in with {provider.name}
+                                  </button>
+                                </div>
+                      }
+                  })}
+
+                </div>
                 <p className="text-muted text-justified text-center" >Click to sign into your user account </p>
             </div>
 

@@ -78,9 +78,8 @@ export default NextAuth({
             try {
               let auth_user = token.user;
               let email =  auth_user.email;
-              let profile =  auth_user.profile;
+              let profile =  auth_user.image;
               let db_user = await User.findOne({ where: { email }});
-
 
               if (!db_user) {
                 const [fname, lname] = auth_user.name.split(' ');
