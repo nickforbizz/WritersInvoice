@@ -4,7 +4,7 @@ const Sequelize_DB = require('../utils/db');
 
 
 
-const AccountShema = Sequelize_DB.define('accounts', {
+const AccountSchema = Sequelize_DB.define('accounts', {
     id:{
   
         // Sequelize module has INTEGER Data_Type.
@@ -93,7 +93,7 @@ const AccountShema = Sequelize_DB.define('accounts', {
 });
 
 
-// Exporting AccountShema, using this constant
+// Exporting AccountSchema, using this constant
 // we can perform CRUD operations on
 // 'Account' table.
-module.exports = AccountShema
+module.exports = AccountSchema
