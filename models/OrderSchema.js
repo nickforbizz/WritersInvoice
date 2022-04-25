@@ -4,7 +4,7 @@ const Sequelize_DB = require('../utils/db');
 
 
 
-const OrderShema = Sequelize_DB.define('orders', {
+const OrderSchema = Sequelize_DB.define('orders', {
     id:{
         type: Sequelize.INTEGER,
         autoIncrement:true,
@@ -58,6 +58,11 @@ const OrderShema = Sequelize_DB.define('orders', {
         comment: "Has the payment been done" 
     },
 
+    deadline_date: {
+        type: Sequelize.DATE,
+        comment: "The date the order should be submitted"
+    },
+
     payment_date: {
         type: Sequelize.DATE,
         comment: "The date the payment was made for this order"
@@ -93,7 +98,7 @@ const OrderShema = Sequelize_DB.define('orders', {
 });
 
 
-// Exporting OrderShema, using this constant
+// Exporting OrderSchema, using this constant
 // we can perform CRUD operations on
 // 'Orders' table.
-module.exports = OrderShema
+module.exports = OrderSchema
