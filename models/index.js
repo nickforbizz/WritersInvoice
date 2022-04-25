@@ -10,6 +10,7 @@ Models.Order = require('./OrderSchema');
 Models.InProgressOrder = require('./InProgressOrderSchema');
 Models.RevisedOrder = require('./RevisedOrderSchema');
 Models.CancelledOrder = require('./CancelledOrderSchema');
+Models.CompleteOrder = require('./CompleteOrderSchema');
 
 
 
