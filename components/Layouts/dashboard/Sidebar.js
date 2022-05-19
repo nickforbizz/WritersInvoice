@@ -12,7 +12,6 @@ const Sidebar = () => {
 	
 	
 	useEffect(() => {
-		console.log({token})
 		let user = token?.user;
 		setUser(user)	
 	})

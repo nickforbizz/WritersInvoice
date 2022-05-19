@@ -1,6 +1,11 @@
+// import React from 'react'
+import  Axios  from 'axios'
 import React from 'react'
-
-const Orders = () => {
+import { useForm } from "react-hook-form";
+import { getCsrfToken } from "next-auth/react"
+// import MUIDataTable from "mui-datatables";
+import toastr from 'toastr';
+const Orders = ({accounts, csrfToken}) => {
   return (
     <>
         <div className="content">
@@ -21,6 +26,16 @@ const Orders = () => {
   )
 }
 
+
+Orders.getInitialProps = async (context) => {
+    const csrfToken = await getCsrfToken(context);
+    const fetch_accs_url = process.env.BACKEND_URL+'/account';
+    const {accounts} = await Axios.get(fetch_accs_url);
+
+    return {
+        accounts, csrfToken
+    }
+}
 
 Orders.layout = "dashboardLayout"
 export default Orders
