@@ -67,6 +67,9 @@ export default function Footer() {
 	<script src="/dashboard/assets/js/atlantis.min.js"></script>
 	<script src="/dashboard/assets/js/main.js"></script>
 
+	{/* custom */}
+	<script src="/dashboard/assets/js/custom.js"></script>
+
 	
     </>
   )

@@ -38,8 +38,8 @@ const  Home = ({ csrfToken, providers }) => {
                     </div>
 
                     <div className="col-md-6">
-                        <div className="card mt-5 box-shadow">
-                            <Image layout='responsive' width={'100%'} height={"70%"} src="/assets/imgs/creative.jpg"  className="card-img-top" alt="creative" />
+                        <div className="card mt-2 box-shadow">
+                            <Image layout='responsive' width={'60%'} height={"40%"} src="/assets/imgs/creative.jpg"  className="card-img-top" alt="creative" />
                             <div className='p-3'>
 
                                 <Link href={'/auth/signin'}>

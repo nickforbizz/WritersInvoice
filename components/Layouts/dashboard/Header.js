@@ -14,7 +14,6 @@ export default function Header(){
 	
 	
 	useEffect(() => {
-		console.log({token})
 		let user = token?.user;
 		setUser(user)	
 	})

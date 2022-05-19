@@ -60,7 +60,7 @@ const onSubmit = data => {
                                     <input type="text" className="form-control" id="signUp_fname" 
                                             placeholder="Enter here"
                                             {...register("fname", { required: true })} />
-                                    {errors.fname && <span className='red'>This field is required</span>}
+                                    {errors.fname && <span className='red'>This field is required</span>} 
                                 </div>
 
                                 <div className="col-md-6 mb-3">
