@@ -8,16 +8,38 @@ import toastr from 'toastr';
 
 // components
 import Link from 'next/link';
-import { env } from '../../next.config';
 
 const Accounts = ({accounts, csrfToken}) => {
-    const BACKEND_URL = env.BACKEND_URL
+    const { register, setValue, handleSubmit, watch, reset, formState: { errors } } = useForm();
+
+    const openModal = () => {
+        setValue("record_id",-1);
+        reset();
+        $("#addRowModal").modal()
+    }
     
     // Submit Data
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
-    const onSubmit = data => {
+    const onSubmit = async data => {
+        console.log(data.record_id);
+        let url = process.env.BACKEND_URL+'/account';
+        let target_url = url;
+        let method = 'post';
+        if(data.record_id == -1) {
+            target_url = url;
+            method = 'post';
+        }else{
+            target_url = `${url}/${data.record_id}`;
+            method = 'put';
+        }
+
+
         try {
-            Axios.post(`${BACKEND_URL}/account`, data)
+            await Axios({
+                url: target_url,
+                method,
+                data,
+            })
+            // Axios.post(target_url, data)
             .then(function (response) {
               reset();
               let res = response.data;
@@ -37,14 +59,52 @@ const Accounts = ({accounts, csrfToken}) => {
             });
             
         } catch (error) {
-          // logger.error(error.stack) 
           console.error(error);
         }
     }
 
-    console.log(accounts)
+    // Edit form data
+    const editAccount = async (id) => {
+        let fetch_account_url = process.env.BACKEND_URL+'/account/'+id
+        const edit_accounts = await Axios.get(fetch_account_url);
+        toastr.success(edit_accounts.data.msg, 'Account Registration|Ammendment');
+
+        // check if there is data to edit
+        console.log(edit_accounts.data)
+        console.log(id)
+       if(edit_accounts.data && edit_accounts.data.data){
+           let edit_data = edit_accounts.data.data;
+           setValue("record_id", edit_data.id);
+           setValue("name", edit_data.name);
+           setValue("cpp", edit_data.cpp);
+           setValue("managed_by", edit_data.managed_by);
+           setValue("no_of_writers", edit_data.no_of_writers);
+           setValue("uses_vpn", edit_data.uses_vpn);
+           setValue("vpn_name", edit_data.vpn_name);
+           setValue("vpn_cost", edit_data.vpn_cost);
+       }
+        $("#addRowModal").modal()
+    }
+
     const acc_columns = [
-        'id',"name", "cpp", "managed_by", "no_of_writers", "uses_vpn", "vpn_name", "vpn_cost",
+        {
+            name: '',
+            label: '#',
+            options: {filter: false,
+                customBodyRender : (value, tableMeta, update) => {
+                    let rowIndex = Number(tableMeta.rowIndex) + 1;
+                    return ( <span>{rowIndex}</span> )
+                }
+            },
+        },
+        {name: 'id', label: 'Record ID'},
+        {name: 'name', label: 'Name'},
+        {name: 'cpp', label: 'CPP'},
+        {name: 'managed_by', label: 'Managed By'},
+        {name: 'no_of_writers', label: 'No of Writers'},
+        {name: 'uses_vpn', label: 'Uses Vpn'},
+        {name: 'vpn_name', label: 'Vpn Name'},
+        {name: 'vpn_cost', label: 'Vpn Cost'},
         {
             name: "Action",
             options: {
@@ -53,9 +113,9 @@ const Accounts = ({accounts, csrfToken}) => {
               empty: true,
               customBodyRender: (dataIndex, rowData) => {
                 return (
-                  <button onClick={() => editAccount(rowData.rowData[0])}>
-                    Edit
-                  </button>
+                    <i className="fa fa-edit text-primary" 
+                        onClick={() => editAccount(rowData.rowData[1])}>
+                    </i>
                 );
               }
             }
@@ -63,15 +123,10 @@ const Accounts = ({accounts, csrfToken}) => {
     ];
     const acc_data = accounts;
     const options = {
-        // filterType: 'checkbox',
+        selectableRows: false
     };
 
-    const editAccount = async (id) => {
-        let fetch_account_url = process.env.BACKEND_URL+'/account/'+id
-        const edit_accounts = await Axios.get(fetch_account_url);
-        console.log(edit_accounts);
-        $("#addRowModal").modal()
-    }
+    
 
 
     return (
@@ -103,7 +158,7 @@ const Accounts = ({accounts, csrfToken}) => {
                                 <div className="card-header">
                                     <div className="d-flex align-items-center">
                                         <h4 className="card-title">Add Record</h4>
-                                        <button className="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
+                                        <button className="btn btn-primary btn-round ml-auto" onClick={openModal}>
                                             <i className="fa fa-plus mr-2"></i>
                                             Add Record
                                         </button>
@@ -113,27 +168,36 @@ const Accounts = ({accounts, csrfToken}) => {
                                 <div className="card-body">
 
 
+                                    {
+                                        <MUIDataTable
+                                            title={"Accounts List"}
+                                            data={acc_data}
+                                            columns={acc_columns}
+                                            options={options}
+                                        />
+                                    }
+
                                     {/* <!-- Modal --> */}
                                     <div className="modal fade" id="addRowModal" tabIndex="-1" role="dialog" aria-hidden="true">
                                         <div className="modal-dialog modal-lg" role="document">
                                             <div className="modal-content">
                                                 <div className="modal-header ">
                                                     <h5 className="modal-title">
-                                                        Add New Record
+                                                        Add | Edit Record
                                                     </h5>
                                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <div className="modal-body p-3">
-                                                    <p className="small">Create a new row using this form, make sure you fill them all</p>
+                                                <div className="modal-body">
                                                    
                                                    
                                                     <form className="form" onSubmit={handleSubmit(onSubmit)}>
                                                         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+                                                        <input type="hidden" {...register("record_id")} defaultValue={-1}/>
                                                         <div className="row">
                                                             <div className="col-sm-12">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>Name</label>
                                                                     <input id="addName" type="text" className="form-control" 
                                                                         placeholder="fill name" 
@@ -144,7 +208,7 @@ const Accounts = ({accounts, csrfToken}) => {
 
 
                                                             <div className="col-md-6 pr-0">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>CPP</label>
                                                                     <input id="addCPP" type="number" className="form-control" 
                                                                         placeholder="fill cpp" 
@@ -155,7 +219,7 @@ const Accounts = ({accounts, csrfToken}) => {
 
 
                                                             <div className="col-md-6">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>Managed By</label>
                                                                     <input id="addManagedBy" type="number" className="form-control" 
                                                                     placeholder="fill ManagedBy"
@@ -166,7 +230,7 @@ const Accounts = ({accounts, csrfToken}) => {
 
 
                                                             <div className="col-md-6 pr-0">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>No Of Writers</label>
                                                                     <input id="addNoOfWriters" type="number" className="form-control" 
                                                                         placeholder="fill no_of_writers" 
@@ -176,7 +240,7 @@ const Accounts = ({accounts, csrfToken}) => {
                                                             </div>
 
                                                             <div className="col-md-6 pr-0">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>Uses Vpn</label>
                                                                     <input id="adduses_vpn" type="number" className="form-control" 
                                                                         placeholder="fill uses_vpn" 
@@ -186,7 +250,7 @@ const Accounts = ({accounts, csrfToken}) => {
                                                             </div>
 
                                                             <div className="col-md-6 pr-0">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>Vpn Name</label>
                                                                     <input id="addvpn_name" type="text" className="form-control" 
                                                                         placeholder="fill vpn_name" 
@@ -196,7 +260,7 @@ const Accounts = ({accounts, csrfToken}) => {
                                                             </div>
 
                                                             <div className="col-md-6 pr-0">
-                                                                <div className="form-group form-group-default">
+                                                                <div className="form-group form-group">
                                                                     <label>Vpn Cost</label>
                                                                     <input id="addvpn_cost" type="number" className="form-control" 
                                                                         placeholder="fill vpn_cost" 
@@ -223,14 +287,7 @@ const Accounts = ({accounts, csrfToken}) => {
                                     </div>
 
 
-                                    {
-                                        <MUIDataTable
-                                            title={"Accounts List"}
-                                            data={acc_data}
-                                            columns={acc_columns}
-                                            options={options}
-                                        />
-                                    }
+                                   
                                 </div>
                             </div>
                         </div>
