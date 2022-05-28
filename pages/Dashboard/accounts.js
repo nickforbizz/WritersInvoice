@@ -285,7 +285,7 @@ const Accounts = ({accounts, csrfToken}) => {
                                                                     <select className="form-control"  
                                                                             id="adduses_vpn"
                                                                             {...register("uses_vpn", { required: true })}> 
-                                                                        <option selected disabled>--select--</option>
+                                                                        <option defaultValue disabled>--select--</option>
                                                                         <option value="1">Yes</option>
                                                                         <option value="2">No</option>
                                                                     </select>

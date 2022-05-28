@@ -6,9 +6,9 @@ import { getCsrfToken } from "next-auth/react"
 import MUIDataTable from "mui-datatables";
 import { Switch } from '@mui/material';
 import { useRouter } from 'next/router';
-import toastr from 'toastr';
 import SelectField from '../../components/HtmlFields/select';
 import moment from 'moment';
+import toastr from 'toastr';
 
 
 
@@ -21,6 +21,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
         setValue("record_id",-1);
         reset();
         $("#addRowModal").modal()
+        
     }
 
 
@@ -111,7 +112,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
         }
     }
 
-
+    
 
 
     const orders_columns = [
@@ -230,6 +231,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
 
                                     {
                                         <MUIDataTable
+                                            id="orders_tb"
                                             title={"Orders List"}
                                             data={orders_data}
                                             columns={orders_columns}
@@ -265,7 +267,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
                                                                     <select className="form-control" 
                                                                             id="account_id"
                                                                             {...register("account_id", { required: true })}> 
-                                                                        <option selected disabled>--select--</option>
+                                                                        <option defaultValue disabled>--select--</option>
                                                                         {
                                                                             accounts.map((item, i) => (
                                                                                  <option value={item.id} key={i}>{item.name}</option>
@@ -282,7 +284,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
                                                                     <select className="form-control" 
                                                                             id="writer_id"
                                                                             {...register("writer_id", { required: true })}> 
-                                                                        <option selected disabled>--select--</option>
+                                                                        <option defaultValue disabled>--select--</option>
                                                                         {
                                                                             users.map((item, i) => (
                                                                                  <option value={item.id} key={i}>{item.email}</option>
@@ -321,7 +323,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
                                                                     <select className="form-control" 
                                                                             id="order_status"
                                                                             {...register("status", { required: true })}> 
-                                                                        <option selected disabled>--select--</option>
+                                                                        <option defaultValue disabled>--select--</option>
                                                                         <option value="1">On-progress</option>
                                                                         <option value="2">Revision</option>
                                                                         <option value="3">On-hold</option>
@@ -360,7 +362,7 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
                                                                     <select className="form-control"  
                                                                             id="paid"
                                                                             {...register("paid", { required: true })}> 
-                                                                        <option selected disabled>--select--</option>
+                                                                        <option defaultValue disabled>--select--</option>
                                                                         <option value="1">Yes</option>
                                                                         <option value="0">No</option>
                                                                     </select>
