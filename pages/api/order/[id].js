@@ -45,6 +45,12 @@ export default async function handler(req, res) {
                     res.status(200).json({ success: false, msg: 'Record Not found', data: response })
                 }
                 
+                req.body.total_pay = parseInt(req.body.pages) * parseFloat(req.body.cpp);
+                 // check if paid
+                 if(!req.body.paid){
+                    req.body.payment_date = null; 
+                }
+
                 await Order.update(req.body,{ where: { id,  }});
                 response = await Order.findByPk(id);
 

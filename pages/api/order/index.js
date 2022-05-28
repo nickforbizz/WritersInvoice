@@ -29,6 +29,16 @@ export default async function handler(req, res) {
         
         case 'POST':
             try {
+                const max_order = await Order.max('id');
+                let order_number =  req.body.account_id+max_order;
+                req.body.order_number = ('#00' + order_number).slice(-5);
+                req.body.total_pay = parseInt(req.body.pages) * parseFloat(req.body.cpp);
+
+                // check if paid
+                if(!req.body.paid){
+                    req.body.payment_date = null; 
+                }
+
                 const order = await Order.create(req.body);
                 res.status(201).json({ success: true, msg: 'Created data successfully', data: order })
             } catch (error) {

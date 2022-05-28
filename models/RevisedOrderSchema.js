@@ -12,11 +12,6 @@ const RevisedOrderSchema = Sequelize_DB.define('revised_orders', {
         primaryKey:true
     },
 
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        unique: true,
-    },
 
     order_id:{
         type: Sequelize.INTEGER,

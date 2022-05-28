@@ -8,8 +8,12 @@ import toastr from 'toastr';
 
 // components
 import Link from 'next/link';
+import { Switch } from '@mui/material';
+import { useRouter } from 'next/router';
+
 
 const Accounts = ({accounts, csrfToken}) => {
+    const router = useRouter(); 
     const { register, setValue, handleSubmit, watch, reset, formState: { errors } } = useForm();
 
     const openModal = () => {
@@ -43,11 +47,12 @@ const Accounts = ({accounts, csrfToken}) => {
             .then(function (response) {
               reset();
               let res = response.data;
-              if (res && response.status == 201) {
+              if (res && (response.status == 201 || response.status == 200)) {
                   toastr.success(res.msg, 'Account Registration');
                   toastr.success("redirecting to login page", 'Account Registration');
+                  $("#addRowModal").modal('hide')
                   setTimeout(() => {
-                    //   router.push('/')
+                    router.reload()
                   }, 2000);
               } else {
                   toastr.error(res.msg, 'Account Registration')
@@ -86,6 +91,24 @@ const Accounts = ({accounts, csrfToken}) => {
         $("#addRowModal").modal()
     }
 
+
+    // Delete the Record
+    const delAccount = async (id) => {
+        let confirm = window.confirm("You are about to permanently delete this record. Are you sure you want to proceed?");
+        if(confirm){
+            let fetch_account_url = process.env.BACKEND_URL+'/account/'+id
+            await Axios.delete(fetch_account_url)
+                       .then((res) => {  
+                           toastr.success(res.data.msg); 
+                           setTimeout(() => {
+                                router.reload()
+                            }, 2000);
+                           console.log(res);  
+                        })
+                       .catch((err) => { console.error(err); })
+        }
+    }
+
     const acc_columns = [
         {
             name: '',
@@ -102,7 +125,19 @@ const Accounts = ({accounts, csrfToken}) => {
         {name: 'cpp', label: 'CPP'},
         {name: 'managed_by', label: 'Managed By'},
         {name: 'no_of_writers', label: 'No of Writers'},
-        {name: 'uses_vpn', label: 'Uses Vpn'},
+        {
+            name: "uses_vpn",
+            label: 'Uses Vpn',
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return <div>
+                        <Switch checked={value}/>
+                    </div>;
+                }
+            },
+        },
         {name: 'vpn_name', label: 'Vpn Name'},
         {name: 'vpn_cost', label: 'Vpn Cost'},
         {
@@ -113,9 +148,14 @@ const Accounts = ({accounts, csrfToken}) => {
               empty: true,
               customBodyRender: (dataIndex, rowData) => {
                 return (
-                    <i className="fa fa-edit text-primary" 
-                        onClick={() => editAccount(rowData.rowData[1])}>
-                    </i>
+                    <>
+                        <i className="fa fa-edit text-primary mr-4" 
+                            onClick={() => editAccount(rowData.rowData[1])}>
+                        </i>
+                        <i className="fa fa-trash text-danger" 
+                            onClick={() => delAccount(rowData.rowData[1])}>
+                        </i>
+                    </>
                 );
               }
             }
@@ -242,9 +282,13 @@ const Accounts = ({accounts, csrfToken}) => {
                                                             <div className="col-md-6 pr-0">
                                                                 <div className="form-group form-group">
                                                                     <label>Uses Vpn</label>
-                                                                    <input id="adduses_vpn" type="number" className="form-control" 
-                                                                        placeholder="fill uses_vpn" 
-                                                                        {...register("uses_vpn", { required: true })} />
+                                                                    <select className="form-control"  
+                                                                            id="adduses_vpn"
+                                                                            {...register("uses_vpn", { required: true })}> 
+                                                                        <option selected disabled>--select--</option>
+                                                                        <option value="1">Yes</option>
+                                                                        <option value="2">No</option>
+                                                                    </select>
                                                                     {errors.uses_vpn && <span className='red'>This field is required</span>}
                                                                 </div>
                                                             </div>
@@ -313,12 +357,8 @@ Accounts.getInitialProps = async (context) => {
     const fetch_accs_url = process.env.BACKEND_URL+'/account';
     const accounts = await Axios.get(fetch_accs_url)
             .then(function (response) {
-                // console.log(response);
                 if(response && response.data && response.data.data){
-                    let res = response.data.data;
-                    console.log(res);
-                   return res
-
+                    return response.data.data;
                 }
                 return null
             })
