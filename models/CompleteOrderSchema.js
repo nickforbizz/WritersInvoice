@@ -12,11 +12,6 @@ const CompleteOrderSchema = Sequelize_DB.define('complete_orders', {
         primaryKey:true
     },
 
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        unique: true,
-    },
 
     order_id:{
         type: Sequelize.INTEGER,

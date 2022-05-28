@@ -20,11 +20,6 @@ const AccountSchema = Sequelize_DB.define('accounts', {
         primaryKey:true
     },
 
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        unique: true,
-      },
 
     name: {
         type: Sequelize.STRING,

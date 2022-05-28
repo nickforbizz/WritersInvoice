@@ -12,11 +12,6 @@ const OrderSchema = Sequelize_DB.define('orders', {
         primaryKey:true
     },
 
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        unique: true,
-    },
 
     writer_id:{
         type: Sequelize.INTEGER,
@@ -29,7 +24,7 @@ const OrderSchema = Sequelize_DB.define('orders', {
     },
 
     order_number:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull:false,
         unique: true
     },

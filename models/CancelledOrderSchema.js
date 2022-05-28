@@ -12,11 +12,6 @@ const CancelledOrderSchema = Sequelize_DB.define('cancelled_orders', {
         primaryKey:true
     },
 
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        unique: true,
-    },
 
     order_id:{
         type: Sequelize.INTEGER,

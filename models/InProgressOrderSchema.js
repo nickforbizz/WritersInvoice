@@ -12,11 +12,6 @@ const InProgressOrderSchema = Sequelize_DB.define('inprogress_orders', {
         primaryKey:true
     },
 
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        unique: true,
-    },
 
     order_id:{
         type: Sequelize.INTEGER,
