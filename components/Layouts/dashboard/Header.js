@@ -36,6 +36,7 @@ export default function Header(){
             {/* <!-- CSS Files --> */}
             <link rel="stylesheet" href="/dashboard/assets/css/bootstrap.min.css" />
             <link rel="stylesheet" href="/dashboard/assets/css/atlantis.min.css" />
+            <link rel="stylesheet" href="/dashboard/assets/css/toastr.min.css" />
 
             {/* <!-- CSS Just for demo purpose, don't include it in your project --> */}
             <link rel="stylesheet" href="/dashboard/assets/css/demo.css" />
@@ -94,7 +95,7 @@ export default function Header(){
 									</div>
 								</li>
 								<li>
-									<a className="see-all" href="javascript:void(0);">See all notifications<i className="fa fa-angle-right"></i> </a>
+									<a className="see-all" href="#">See all notifications<i className="fa fa-angle-right"></i> </a>
 								</li>
 							</ul>
 						</li>

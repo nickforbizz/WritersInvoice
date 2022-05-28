@@ -62,6 +62,7 @@ export default function Footer() {
 
 	{/* <!-- Sweet Alert --> */}
 	<script src="/dashboard/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+	<script src="/dashboard/assets/js/toastr.min.js"></script>
 
 	{/* <!-- Atlantis JS --> */}
 	<script src="/dashboard/assets/js/atlantis.min.js"></script>
