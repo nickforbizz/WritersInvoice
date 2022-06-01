@@ -1,6 +1,6 @@
 import logger from '../../../services/logger';
 
-const {InProgressOrder} = require('../../../models');
+const {InProgressOrder, Order} = require('../../../models');
 
 
 
@@ -19,7 +19,11 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const response = await InProgressOrder.findAll();
+                const response = await Order.findAll({
+                    where: {
+                        status: 1
+                    }
+                  });
                 res.status(200).json({ success: true, msg: 'Retrived data successfully', data: response })
             } catch (error) {
                 logger.error(error.stack);

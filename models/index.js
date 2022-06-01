@@ -20,7 +20,7 @@ Models.CompleteOrder = require('./CompleteOrderSchema');
 Sequelize_DB.sync()
 
 // Make changes to match the Model
-Sequelize_DB.sync({ alter: true });
+Sequelize_DB.sync({ alter: true, force: false });
 
 // Drop the table, then Recreate it 
 // Sequelize_DB.sync({ force: true });

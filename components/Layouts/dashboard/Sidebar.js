@@ -83,13 +83,49 @@ const Sidebar = () => {
 							</Link>
 						</li>
 
-						<li className={"nav-item " + (router.pathname == "/Dashboard/orders" ? "active" : "")}>
-							<Link href="/Dashboard/orders">
-								<a>
-									<i className="fa fa-rss"></i>
-									<span className="sub-item">Orders </span>
-								</a>
-							</Link>
+						
+
+						<li className="nav-item">
+							<a data-toggle="collapse" href="#orders">
+								<i className="fa fa-table"></i>
+								<p>Orders</p>
+								<span className="caret"></span>
+							</a>
+							<div className="collapse" id="orders">
+								<ul className="nav nav-collapse">
+									<li className={"nav-item " + (router.pathname == "/Dashboard/orders" ? "active" : "")}>
+										<Link href="/Dashboard/orders">
+											<a>
+												<span className="sub-item">Orders </span>
+											</a>
+										</Link>
+									</li>
+									<li className={"nav-item " + (router.pathname == "/Dashboard/inprogress_orders" ? "active" : "")}>
+										<Link href="/Dashboard/inprogress_orders">
+											<a>
+												<span className="sub-item"> InProgress Orders </span>
+											</a>
+										</Link>
+									</li>
+
+									<li className={"nav-item " + (router.pathname == "/Dashboard/completed_orders" ? "active" : "")}>
+										<Link href="/Dashboard/completed_orders">
+											<a>
+												<span className="sub-item"> Completed Orders </span>
+											</a>
+										</Link>
+									</li>
+
+									<li className={"nav-item " + (router.pathname == "/Dashboard/cancelled_orders" ? "active" : "")}>
+										<Link href="/Dashboard/cancelled_orders">
+											<a>
+												<span className="sub-item"> Cancelled Orders </span>
+											</a>
+										</Link>
+									</li>
+									
+								</ul>
+							</div>
 						</li>
 
 						<li className="nav-item">

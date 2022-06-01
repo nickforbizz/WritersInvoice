@@ -24,6 +24,16 @@
             "date": 1653724532643,
             "name": "logs\\application-2022-05-28.log",
             "hash": "cc2a7a2eaa91b5e5131e7eb5d28aacac"
+        },
+        {
+            "date": 1653814314443,
+            "name": "logs\\application-2022-05-29.log",
+            "hash": "efbae05cf9ca62af575a4f33ca3e3096"
+        },
+        {
+            "date": 1654072949844,
+            "name": "logs\\application-2022-06-01.log",
+            "hash": "3b252c5c65841cb15a75dcac2cb197d3"
         }
     ],
     "hashType": "md5"

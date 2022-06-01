@@ -1,6 +1,6 @@
 import logger from '../../../services/logger';
 
-const {CancelledOrder} = require('../../../models');
+const {CancelledOrder, Order} = require('../../../models');
 
 
 
@@ -19,7 +19,11 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const response = await CancelledOrder.findAll();
+                const response = await Order.findAll({
+                    where: {
+                        status: 5
+                    }
+                  });
                 res.status(200).json({ success: true, msg: 'Retrived data successfully', data: response })
             } catch (error) {
                 logger.error(error.stack);
