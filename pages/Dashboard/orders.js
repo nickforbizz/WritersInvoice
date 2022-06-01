@@ -192,7 +192,8 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
     ];
     const orders_data = orders;
     const options = {
-        selectableRows: false
+        selectableRows: false,
+        responsive: 'scroll'
     };
   return (
     <>
@@ -231,7 +232,6 @@ const Orders = ({accounts, orders, users, csrfToken}) => {
 
                                     {
                                         <MUIDataTable
-                                            id="orders_tb"
                                             title={"Orders List"}
                                             data={orders_data}
                                             columns={orders_columns}
